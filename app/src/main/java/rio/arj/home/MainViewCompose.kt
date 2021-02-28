@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -22,16 +23,21 @@ import rio.arj.R
 import rio.arj.ui.theme.SimpleJetpackComposeTheme
 
 @Composable
-fun HomeView() {
+fun HomeView(
+    currentDateValue: String,
+    onClickSearch: () -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val (imageProfile, currentDate, buttonSearch) = createRefs()
+        val (imageProfile, textCurrentDate, buttonSearch) = createRefs()
 
         createHorizontalChain(
             imageProfile,
             chainStyle = ChainStyle.Packed(0F)
         )
+
+        val context = LocalContext.current
 
         Image(
             painter = painterResource(id = R.drawable.ic_person),
@@ -40,16 +46,16 @@ fun HomeView() {
                 .constrainAs(imageProfile) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
-                    end.linkTo(currentDate.start)
+                    end.linkTo(textCurrentDate.start)
                     width = Dimension.wrapContent
                 }
                 .padding(16.dp)
         )
 
         Text(
-            text = "27 Februari 2021",
+            text = currentDateValue,
             modifier = Modifier
-                .constrainAs(currentDate) {
+                .constrainAs(textCurrentDate) {
                     start.linkTo(imageProfile.end)
                     top.linkTo(parent.top)
                     end.linkTo(buttonSearch.start)
@@ -65,15 +71,16 @@ fun HomeView() {
         )
 
         IconButton(
-            onClick = {},
+            onClick = { onClickSearch() },
             modifier = Modifier
                 .constrainAs(buttonSearch) {
                     top.linkTo(imageProfile.top)
                     end.linkTo(parent.end)
-                    start.linkTo(currentDate.end)
+                    start.linkTo(textCurrentDate.end)
                     bottom.linkTo(imageProfile.bottom)
                     width = Dimension.wrapContent
                 }
+                .padding(end = 16.dp)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
@@ -87,6 +94,6 @@ fun HomeView() {
 @Composable
 fun DefaultPreview() {
     SimpleJetpackComposeTheme {
-        HomeView()
+        HomeView("1 Januari 2021",{})
     }
 }

@@ -1,34 +1,29 @@
 package rio.arj.home
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ChainStyle
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import rio.arj.R
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import rio.arj.ui.theme.SimpleJetpackComposeTheme
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SimpleJetpackComposeTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    HomeView()
+                    HomeView(
+                        currentDateValue = viewModel.currentDate,
+                        onClickSearch = {
+                            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 }
             }
         }
